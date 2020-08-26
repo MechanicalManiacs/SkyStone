@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -75,6 +76,21 @@ public class VuforiaAutonomous extends OpMode {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            if (updatedRecognitions.size() == 3) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                // step through the list of recognitions and display boundary info.
+                for (Recognition recognition : updatedRecognitions) {
+                    if (recognition.getLabel() == LABEL_SECOND_ELEMENT) {
+                        double objectAngle = recognition.estimateAngleToObject(AngleUnit.DEGREES);
+                        telemetry.addData("Angle: ", objectAngle);
+                        if (objectAngle > 8) {
+                            telemetry.addData("Direction: ", "Left");
+                        } else if (objectAngle < 8) {
+                            telemetry.addData("Direction: ", "Right");
+                        } else {
+                            telemetry.addData("Direction: ", "Center");
+                        }
+                    }
             if (updatedRecognitions != null) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
                 // step through the list of recognitions and display boundary info.
