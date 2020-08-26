@@ -91,6 +91,13 @@ public class VuforiaAutonomous extends OpMode {
                             telemetry.addData("Direction: ", "Center");
                         }
                     }
+            if (updatedRecognitions != null) {
+                telemetry.addData("# Object Detected", updatedRecognitions.size());
+                // step through the list of recognitions and display boundary info.
+                int i = 0;
+                for (Recognition recognition : updatedRecognitions) {
+
+                    telemetry.addData("X Coordinate: ", (recognition.getLeft()+recognition.getRight())/2);
                 }
                 telemetry.update();
             }
